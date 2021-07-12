@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <input type="text" id="myText" onfocus="this.value=''" value="Country"> 
+    <button onclick="myFunction()">confirm</button>
+
+    <div id="Flag"></div>
+    <script>
+
+
+
+        function myFunction()
+        {
+           
+
+        var x = document.getElementById("myText").value;
+        var data = fetch("https://restcountries.eu/rest/v2/all");
+
+        data
+            .then(function (res) {
+                return res.json();
+            })
+
+
+            .then(function (items) {
+                var selected = items.filter(country => country.name.toLowerCase().includes(x.toLowerCase()))
+                return selected;
+            })
+
+            .then(function(selected){
+                
+                var flag = document.getElementById("Flag");
+                    flag.innerHTML=""
+                for (let i = 0; i < selected.length; i++) {
+               
+                    flag.style.fontSize = "x-large";
+                    flag.style.backgroundColor = "yellow";
+                    var p = document.createElement('p');
+                    p.innerHTML = selected[i].name;
+
+                    flag.appendChild(p);
+                   
+
+                    var img = document.createElement("img");
+                    img.setAttribute("src", selected[i].flag);
+
+                    img.height = 50;
+                    img.width = 50;
+                    flag.appendChild(img);
+                }
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+
+        }
+    </script>
+    <div style="background-color:lightskyblue; position: relative;">
+        <p id="country_info"></p>
+    </div>
+</body>
+
+</html>
